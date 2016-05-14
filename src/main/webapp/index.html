@@ -1,0 +1,36 @@
+<html ng-app="mavenGuide">
+<head>
+    <script src="/static/node_modules/underscore/underscore.js"></script>
+    <script src="/static/node_modules/angular/angular.js"></script>
+    <script src="/static/node_modules/restangular/dist/restangular.js"></script>
+
+    <script type="text/javascript">
+        var mavenGuide = angular.module('mavenGuide',["restangular"]);
+    </script>
+
+    <script src="/static/js/greetingService.js"></script>
+
+    <script type="text/javascript">
+        angular.module('mavenGuide').controller("MainCtrl",["GreetingService","$scope",function(GreetingService,$scope){
+
+            $scope.hello = function() {
+                GreetingService.getGreeting().then(function(data){
+                    $scope.greet = data;
+                });
+            };
+
+            $scope.greet = "";
+        }])
+    </script>
+
+
+</head>
+<body>
+
+<div ng-controller="MainCtrl">
+    <button ng-click="hello()">GREET</button>
+    <div>Generated greeting: {{greet}}</div>
+</div>
+
+</body>
+</html>
