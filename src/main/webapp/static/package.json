@@ -7,5 +7,11 @@
     "angular": "1.5.5",
     "restangular": "1.5.2",
     "underscore": "1.8.3"
+  },
+  "devDependencies": {
+    "jasmine": "2.4.1",
+    "angular-mocks": "1.5.5",
+    "phantomjs-polyfill": "0.0.2",
+    "phantomjs": "^2.1.7"
   }
 }

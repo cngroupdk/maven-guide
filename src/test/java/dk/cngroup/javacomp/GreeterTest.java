@@ -14,13 +14,13 @@ public class GreeterTest {
 
     @Test
     public void shouldGreetTom(){
-        assertEquals("Hello Tom!", new Greeter().sayHelloTo("Tom"));
+        assertEquals("Hello Tom!", new Greeter().sayHello("Tom"));
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowException(){
-        new Greeter().sayHelloTo("");
+        new Greeter().sayHello("");
     }
 
 
