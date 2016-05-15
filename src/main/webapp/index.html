@@ -36,13 +36,13 @@
 
 <div ng-controller="MainCtrl">
     <div>
-        <button ng-click="hello()">GREET ANONYMOUS</button>
+        <button id="btn1" ng-click="hello()">GREET ANONYMOUS</button>
     </div>
     <div>
-        <button ng-click="helloPerson()">GREET</button>
-        <input type="text" ng-model="person"/>
+        <button id="btn2" ng-click="helloPerson()">GREET</button>
+        <input id="input" type="text" ng-model="person"/>
     </div>
-    <div>Generated greeting: {{greet}}</div>
+    <div id="display">Generated greeting: {{greet}}</div>
 </div>
 
 </body>
