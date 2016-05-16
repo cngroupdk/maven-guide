@@ -5,10 +5,10 @@
     <script src="/static/node_modules/restangular/dist/restangular.js"></script>
 
     <script type="text/javascript">
-        var mavenGuide = angular.module('mavenGuide',["restangular"]);
+        angular.module('mavenGuide',["restangular"]);
     </script>
 
-    <script src="/static/js/greetingService.js"></script>
+    <script src="/static/js/service/greetingService.js"></script>
 
     <script type="text/javascript">
         angular.module('mavenGuide').controller("MainCtrl",["GreetingService","$scope",function(GreetingService,$scope){
@@ -19,6 +19,13 @@
                 });
             };
 
+            $scope.helloPerson = function() {
+                GreetingService.getGreetingPerson($scope.person).then(function(data){
+                    $scope.greet = data;
+                });
+            };
+
+            $scope.person = "";
             $scope.greet = "";
         }])
     </script>
@@ -28,8 +35,14 @@
 <body>
 
 <div ng-controller="MainCtrl">
-    <button ng-click="hello()">GREET</button>
-    <div>Generated greeting: {{greet}}</div>
+    <div>
+        <button id="btn1" ng-click="hello()">GREET ANONYMOUS</button>
+    </div>
+    <div>
+        <button id="btn2" ng-click="helloPerson()">GREET</button>
+        <input id="input" type="text" ng-model="person"/>
+    </div>
+    <div id="display">Generated greeting: {{greet}}</div>
 </div>
 
 </body>

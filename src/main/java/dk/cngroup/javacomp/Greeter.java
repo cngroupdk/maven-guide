@@ -9,7 +9,7 @@ public class Greeter {
     }
 
 
-    public String sayHelloTo(String name){
+    public String sayHello(String name){
 
         if (StringUtils.isEmpty(name)) {
             throw new IllegalArgumentException();
