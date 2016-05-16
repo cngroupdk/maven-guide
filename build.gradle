@@ -21,7 +21,7 @@ repositories {
 }
 
 ext {
-    tomcatVersion = '7.0.59'
+    tomcatVersion = '7.0.69'
 }
 
 sourceSets {
@@ -42,7 +42,21 @@ configurations {
 task npm(type: Exec) {
     group = 'Build'
     workingDir = "$webAppDirName/static"
-    commandLine = commandLineArgs(['cmd', '/c', 'npm', 'install'])
+    commandLine = commandLineArgs(['npm', 'install'])
+}
+
+task testNpm(type: Exec) {
+    group = 'Build'
+    workingDir = 'src/test/javascript'
+    commandLine = commandLineArgs(['npm', 'install'])
+}
+
+task karma(type: Exec) {
+    group = 'Verification'
+    dependsOn testNpm
+
+    workingDir = 'src/test/javascript/node_modules/.bin'
+    commandLine = commandLineArgs(['karma', 'start', file('src/test/javascript/karma.conf.js'), '--single-run'])
 }
 
 task e2eTest(type: Test) {
@@ -61,6 +75,7 @@ def commandLineArgs(List args) {
 
 clean {
     delete "$webAppDirName/static/node_modules"
+    delete "src/test/javascript/node_modules"
 }
 
 war {
