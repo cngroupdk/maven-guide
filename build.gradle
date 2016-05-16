@@ -1,5 +1,9 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
+plugins {
+    id "com.bmuschko.tomcat" version "2.2.4"
+}
+
 apply plugin: 'war'
 
 group = 'dk.cngroup.javacomp'
@@ -14,6 +18,10 @@ tasks.withType(JavaCompile) {
 
 repositories {
     mavenCentral()
+}
+
+ext {
+    tomcatVersion = '7.0.59'
 }
 
 sourceSets {
@@ -31,13 +39,20 @@ configurations {
     e2eTestRuntime.extendsFrom testRuntime
 }
 
+task npm(type: Exec) {
+    group = 'Build'
+    workingDir = "$webAppDirName/static"
+    commandLine = commandLineArgs(['cmd', '/c', 'npm', 'install'])
+}
+
 task e2eTest(type: Test) {
     group = 'Verification'
+    dependsOn npm, tomcatRun
+    finalizedBy tomcatStop
+
     testClassesDir = sourceSets.e2eTest.output.classesDir
     classpath = sourceSets.e2eTest.runtimeClasspath
     outputs.upToDateWhen { false }
-
-    dependsOn war
 }
 
 def commandLineArgs(List args) {
@@ -48,14 +63,13 @@ clean {
     delete "$webAppDirName/static/node_modules"
 }
 
-task npm(type: Exec) {
-    group = 'Build'
-    workingDir = "$webAppDirName/static"
-    commandLine = commandLineArgs(['cmd', '/c', 'npm', 'install'])
-}
-
 war {
     dependsOn npm
+}
+
+tomcat {
+    contextPath = '/'
+    daemon = true
 }
 
 dependencies {
@@ -67,4 +81,8 @@ dependencies {
 
     e2eTestCompile 'org.seleniumhq.selenium:selenium-java:2.53.0'
     e2eTestCompile 'io.github.bonigarcia:webdrivermanager:1.4.3'
+
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:$tomcatVersion"
+    tomcat "org.apache.tomcat.embed:tomcat-embed-logging-juli:$tomcatVersion"
+    tomcat "org.apache.tomcat.embed:tomcat-embed-jasper:$tomcatVersion"
 }
