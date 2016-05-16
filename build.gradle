@@ -14,10 +14,35 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    e2eTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDirs += 'src/test/e2e'
+        }
+    }
+}
+
+configurations {
+    e2eTestCompile.extendsFrom testCompile
+    e2eTestRuntime.extendsFrom testRuntime
+}
+
+task e2eTest(type: Test) {
+    group = 'Verification'
+    testClassesDir = sourceSets.e2eTest.output.classesDir
+    classpath = sourceSets.e2eTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+}
+
 dependencies {
     compile 'commons-lang:commons-lang:2.6'
     compile 'javax.ws.rs:javax.ws.rs-api:2.0'
     compile 'org.glassfish.jersey.containers:jersey-container-servlet-core:2.6'
 
     testCompile 'junit:junit:4.12'
+
+    e2eTestCompile 'org.seleniumhq.selenium:selenium-java:2.53.0'
+    e2eTestCompile 'io.github.bonigarcia:webdrivermanager:1.4.3'
 }
