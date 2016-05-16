@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 apply plugin: 'war'
 
 group = 'dk.cngroup.javacomp'
@@ -34,6 +36,26 @@ task e2eTest(type: Test) {
     testClassesDir = sourceSets.e2eTest.output.classesDir
     classpath = sourceSets.e2eTest.runtimeClasspath
     outputs.upToDateWhen { false }
+
+    dependsOn war
+}
+
+def commandLineArgs(List args) {
+    (Os.isFamily(Os.FAMILY_WINDOWS)) ? ['cmd', '/c'] + args : args
+}
+
+clean {
+    delete "$webAppDirName/static/node_modules"
+}
+
+task npm(type: Exec) {
+    group = 'Build'
+    workingDir = "$webAppDirName/static"
+    commandLine = commandLineArgs(['cmd', '/c', 'npm', 'install'])
+}
+
+war {
+    dependsOn npm
 }
 
 dependencies {
