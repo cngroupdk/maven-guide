@@ -98,10 +98,6 @@
                         <configuration>
                             <karmaExecutable>${project.basedir}/src/test/javascript/node_modules/.bin/karma</karmaExecutable>
                             <configFile>src/test/javascript/karma.conf.js</configFile>
-                            <browsers>PhantomJS</browsers>
-                            <autoWatch>false</autoWatch>
-                            <singleRun>true</singleRun>
-                            <colors>true</colors>
                         </configuration>
                     </plugin>
                 </plugins>
